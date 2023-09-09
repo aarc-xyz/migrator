@@ -1,0 +1,14 @@
+# editor
+*~
+
+# build files
+node_modules/
+dist/
+
+# user specific
+.env
+secret.key
+data/
+
+# logs
+logs/
