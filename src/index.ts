@@ -1,8 +1,9 @@
 import { erc20ABI } from "wagmi";
 import { ethers } from "ethers";
-import { fetchTokens } from "./fetch-tokens";
+// import { fetchTokens } from "./fetch-tokens";
 
 import dotenv from "dotenv";
+import { getBalances } from "./tokens";
 
 dotenv.config();
 
@@ -14,7 +15,8 @@ async function migrate(
   tokenAddresses: string[]
 ) {
 
-  let balances = await fetchTokens(chainId, ownerAddress);
+  let balances = await getBalances(chainId, ownerAddress);
+  console.log(balances)
   if (tokenAddresses.length === 0) {
     // Migrate all tokens
     tokenAddresses = balances.map(b => b.tokenAddress)
