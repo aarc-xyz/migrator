@@ -1,6 +1,5 @@
-import { erc20ABI, useSigner } from "wagmi";
+import { erc20ABI } from "wagmi";
 import { ethers } from "ethers";
-import { TransferPending } from "./types/transfer-success";
 import { fetchTokens } from "./fetch-tokens";
 
 import dotenv from "dotenv";
@@ -9,42 +8,38 @@ dotenv.config();
 
 async function migrate(
   signer: any,
-  chainID: number,
-  RPC_URL: string,
-  EOAAddress: string,
-  SAFEAddress: string,
+  chainId: number,
+  ownerAddress: string,
+  safeAddress: string,
   tokenAddresses: string[]
 ) {
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-  const tokenBalances = await fetchTokens(chainID, EOAAddress);
-  // const { data: signer } = useSigner();
-  console.log(tokenBalances);
-  if (tokenAddresses.length == 0) {
-    tokenBalances.forEach(async (token) => {
-      const erc20Contract = new ethers.Contract(
-        token.tokenAddress,
-        erc20ABI,
-        signer as ethers.Signer
-      );
 
-      const transferFunction = erc20Contract.transfer as (
-        destinationAddress: string,
-        balance: string
-      ) => Promise<TransferPending>;
+  let balances = await fetchTokens(chainId, ownerAddress);
+  if (tokenAddresses.length === 0) {
+    // Migrate all tokens
+    tokenAddresses = balances.map(b => b.tokenAddress)
 
-      await transferFunction(SAFEAddress, token.balance);
-    });
+  } else {
+    // Only migrate specified tokens
+    const selected = balances.filter(b => 
+      tokenAddresses.includes(b.tokenAddress)
+    )
+
+    if (selected.length === 0) {
+      throw new Error('No matching tokens found in balances')
+    }
+
+    balances = selected
   }
+
+  const transfers = balances.map(async balance => {
+    const contract = new ethers.Contract(balance.tokenAddress, erc20ABI, signer)
+    return contract.transfer(safeAddress, balance.balance)
+  })
+
+  await Promise.all(transfers)
 }
 
 module.exports = {
   migrate,
 };
-
-// migrate(
-//   5,
-//   process.env.RPC_URL || " ",
-//   "0x6Ed66a9F6a2885f2E807ce36358819F54Ef43c90",
-//   "0xFE9F5c37D394aDa800d6B76222C871aCbdA3d660",
-//   []
-// );
