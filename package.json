@@ -1,7 +1,7 @@
 {
   "name": "migrator",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "devDependencies": {
     "concurrently": "^8.2.1",
     "typescript": "^5.2.2"

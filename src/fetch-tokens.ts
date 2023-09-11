@@ -4,11 +4,10 @@ import axios from "axios";
 export const fetchTokens = async (
   chainID: number, EOAAddress: string
   ): Promise< TokenBalance[] > =>  {
-
     const tokenBalances: TokenBalance[] = [];  
     try{
       const request = axios.get(
-        `https://api.covalenthq.com/v1/${chainID}/address/${EOAAddress}/balances_v2/?quote-currency=USD&format=JSON&nft=false&no-nft-fetch=false&key=${process.env.COVALENT_KEY}`,
+        `https://api.covalenthq.com/v1/${chainID}/address/${EOAAddress}/balances_v2/?quote-currency=USD&format=JSON&nft=false&no-nft-fetch=false&key=cqt_rQMjXBCXHkFgyGCrB3rxHChvx4wM`,
       )
       const response = await Promise.resolve(request);
       console.log(response.data.data.items);
