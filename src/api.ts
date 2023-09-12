@@ -34,7 +34,7 @@ export interface ApiResponse {
       quote_rate_24h: number | null;
       quote: number;
       quote_24h: number | null;
-      nft_data: null;
+      nft_data: any;
     }[];
   };
 }

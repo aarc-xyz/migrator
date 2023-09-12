@@ -6,6 +6,8 @@ export interface TokenBalance {
   tokenName: string;
   tokenSymbol: string;
   balance: string;
+  supportsErc: string[];
+  nftData: any;
 }
 
 export function formatBalances(response: ApiResponse): TokenBalance[] {
@@ -17,5 +19,7 @@ export function formatBalances(response: ApiResponse): TokenBalance[] {
       tokenName: item.contract_name,
       tokenSymbol: item.contract_ticker_symbol,
       balance: item.balance,
+      supportsErc: item.supports_erc,
+      nftData: item.nft_data
     })) as TokenBalance[];
 }
