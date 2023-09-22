@@ -64,4 +64,5 @@ async function migrate(
 
 module.exports = {
   migrate,
+  getBalances
 };
