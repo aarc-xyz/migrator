@@ -51,7 +51,7 @@ function migrate(signer, chainId, ownerAddress, safeAddress, tokenAddresses) {
                 });
             }
         }
-        return Promise.all(transfers);
+        return transfers;
     });
 }
 const maxRetries = 5;
