@@ -56,7 +56,7 @@ async function migrate(
       });
     }
   }
-  await Promise.all(transfers);
+  return Promise.all(transfers);
   // const provider = new ethers.providers.JsonRpcProvider(
   //   "https://goerli.infura.io/v3/120eaf67c29b4178bb1f898409a2112b"
   // );
